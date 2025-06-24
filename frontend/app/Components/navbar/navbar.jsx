@@ -52,17 +52,17 @@ const Navbar = () => {
               shadow-lg bg-background font-bold items-start text-left transition-all duration-300 ${getTextColorClass()}`}
           >
             <li className="opacity-90 hover:opacity-100 px-3 py-1">
-              <a href="https://dragonsoof.com/" className="block">
+              <a href="/" className="block">
                 Beranda
               </a>
             </li>
             <li className="opacity-90 hover:opacity-100 px-3 py-1">
-              <a href="/" className="block">
+              <a href="/cek-pesanan" className="block">
                 Cek pesanan
               </a>
             </li>
             <li className="opacity-90 hover:opacity-100 px-3 py-1">
-              <a href="/" className="block">
+              <a href="/bantuan" className="block">
                 Bantuan
               </a>
             </li>
@@ -71,7 +71,7 @@ const Navbar = () => {
           {/* Login Button */}
           <div className="hidden md:block">
             <a
-              href="/login"
+              href="/auth/login"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
             >
               <i className="ri-login-box-line text-white mr-2"></i> Login

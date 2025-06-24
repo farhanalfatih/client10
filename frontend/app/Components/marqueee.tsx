@@ -7,36 +7,42 @@ const reviews = [
     username: "@jack",
     body: "I've never seen anything like this before. It's amazing. I love it.",
     img: "https://avatar.vercel.sh/jack",
+    rating: 5,
   },
   {
     name: "Jill",
     username: "@jill",
     body: "I don't know what to say. I'm speechless. This is amazing.",
     img: "https://avatar.vercel.sh/jill",
+    rating: 4,
   },
   {
     name: "John",
     username: "@john",
     body: "I'm at a loss for words. This is amazing. I love it.",
     img: "https://avatar.vercel.sh/john",
+    rating: 5,
   },
   {
     name: "Jane",
     username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "This is really helpful and beautiful!",
     img: "https://avatar.vercel.sh/jane",
+    rating: 3,
   },
   {
     name: "Jenny",
     username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "Such a great experience using this. Totally recommended.",
     img: "https://avatar.vercel.sh/jenny",
+    rating: 4,
   },
   {
     name: "James",
     username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "I'm amazed by how good this is. Great job!",
     img: "https://avatar.vercel.sh/james",
+    rating: 5,
   },
 ];
 
@@ -48,19 +54,19 @@ const ReviewCard = ({
   name,
   username,
   body,
+  rating = 5,
 }: {
   img: string;
   name: string;
   username: string;
   body: string;
+  rating?: number;
 }) => {
   return (
     <figure
       className={cn(
         "relative h-full w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
-        // light styles
         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
-        // dark styles
         "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
       )}
     >
@@ -73,11 +79,19 @@ const ReviewCard = ({
           <p className="text-xs font-medium dark:text-white/40">{username}</p>
         </div>
       </div>
+
+      {/* ⭐ Rating */}
+      <div className="flex mt-2 text-yellow-400 text-sm">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span key={i}>{i < rating ? "★" : "☆"}</span>
+        ))}
+      </div>
+
       <blockquote className="mt-2 text-sm">{body}</blockquote>
     </figure>
   );
 };
-
+  
 export function MarqueeDemo() {
   return (
     <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
@@ -91,8 +105,8 @@ export function MarqueeDemo() {
           <ReviewCard key={review.username} {...review} />
         ))}
       </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background" />
     </div>
   );
 }
