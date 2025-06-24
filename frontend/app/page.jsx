@@ -7,7 +7,6 @@ import Footer from "./Components/footer/footer";
 import InstagramEmbed from "./Components/InstagramEmbed";
 import Marquee from "./Components/testimoni/testimoni";
 import { useEffect } from "react";
-import { MagicCard } from "@/components/magicui/magic-card";
 
 const page = () => {
   return (
@@ -22,9 +21,7 @@ const page = () => {
         </div>
 
         <div className="mt-20">
-          <MagicCard>
             <div className="max-w-6xl mx-auto p-10 bg-white shadow-lg rounded-lg transition-all duration-300"></div>
-          </MagicCard>
         </div>
 
         <div className="mt-30 z-30">
