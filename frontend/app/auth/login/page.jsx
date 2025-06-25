@@ -6,7 +6,6 @@ const LoginPage = () => {
       <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
 
-        {/* Google Login */}
         <button className="w-full bg-red-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-600 transition mb-4">
           Login with Google
         </button>
