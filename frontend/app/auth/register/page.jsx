@@ -34,6 +34,12 @@ const LoginPage = () => {
               required
             />
           </div>
+          <div className="">
+            sudah punya akun?{' '}
+            <a href="/auth/login" className="text-blue-600 hover:underline">
+              Login disini
+            </a>
+          </div>
 
           <button
             type="submit"
