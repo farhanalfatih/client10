@@ -1,35 +1,42 @@
 "use client";
-import React from "react";
-
+import React, { useState } from "react";
 
 const LoginPage = () => {
   const data = [
     {
       username: "admin123",
       password: "admin123",
-      role: true,
+      role: true, // admin
     },
     {
       username: "member123",
       password: "member123",
-      role: false,
+      role: false, // member
     },
   ];
 
-  const handleLogin = (e) => {
-    e.preventDefault(); // ← penting untuk mencegah reload
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    // Simulasi pengecekan login
-    if (data.role === true) {
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // Cari user yang cocok
+    const user = data.find(
+      (u) => u.username === username && u.password === password
+    );
+
+    if (!user) {
+      alert("Username atau password salah!");
+      return;
+    }
+
+    // Redirect sesuai role
+    if (user.role === true) {
       window.location.href = "/Dashboard/admin";
-    } else if (data.role === false) {
+    } else {
       window.location.href = "/Dashboard/member";
     }
-    // Jika login gagal, bisa menampilkan pesan error
-    // alert("Login failed. Please check your credentials.");
-    // Reset form setelah login
-    e.target.reset();
-    
   };
 
   return (
@@ -62,6 +69,8 @@ const LoginPage = () => {
             </label>
             <input
               type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your email or username"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -73,13 +82,15 @@ const LoginPage = () => {
             </label>
             <input
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-          <div className="">
-            belum punya akun?{" "}
+          <div>
+            Belum punya akun?{" "}
             <a href="/auth/register" className="text-blue-600 hover:underline">
               Daftar disini
             </a>
