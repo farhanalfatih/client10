@@ -26,7 +26,7 @@ const Card = ({ ...props }) => {
           </div>
         </div>
         <div className="mt-4">
-          <a href="">
+          <a href="/page/detailprduct">
             <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300">
               Pesan Sekarang
             </button>

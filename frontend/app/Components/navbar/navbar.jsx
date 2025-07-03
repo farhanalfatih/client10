@@ -74,12 +74,15 @@ const Navbar = () => {
               href="/auth/login"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
             >
-              <i className="ri-login-box-line text-white mr-2"></i> Login
+              {/* <i className="ri-login-box-line text-white mr-2"></i> Login */}
+              Discord
             </a>
           </div>
 
           {/* Login button for mobile (inside menu) */}
-          <div className={`md:hidden fixed ${menuAktive} top-80 w-full px-6 transition-all duration-300`}>
+          <div
+            className={`md:hidden fixed ${menuAktive} top-80 w-full px-6 transition-all duration-300`}
+          >
             <a
               href="aurh/login"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 inline-block"

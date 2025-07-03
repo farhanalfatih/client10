@@ -1,16 +1,7 @@
 import React from "react";
-import Card from "../cardproduk/card";
+import Card from "./card";
 import { useEffect } from "react";
-import AOS from "aos";
-import 'aos/dist/aos.css';
-
 const Produk = () => {
-  useEffect(() => {
-      AOS.init({
-        duration: 1000, // durasi animasi dalam ms
-        once: false,     // animasi hanya sekali
-      });
-    }, []);
   return (
     <section className="px-4 mt-10">
       <h2 className="px-4 text-black font-bold text-2xl absolute left-52 mt-[-30]">
