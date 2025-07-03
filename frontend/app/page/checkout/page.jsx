@@ -20,15 +20,14 @@ export default function CheckoutPage() {
   const finalPrice = price - discount;
 
   return (
-    <div className="min-h-screen bg-[#0f1e2e] text-white px-4 py-10">
+    <div className="min-h-screen bg-[#0f1e2e] text-white px-4 py-10 ">
       <div>
         <img
           src="https://tse3.mm.bing.net/th/id/OIP.P0NHhGE_xgDNSjEdu0NDrAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
           alt="Checkout Logo"
-          className="mx-auto mb-6 w-32 h-32 rounded-full shadow-lg
-          border-4 border-teal-400"
+          className="mx-auto mb-6 w-32 h-32 rounded-full shadow-lg border-4 border-teal-400"
         />
-        <h1 className="text-3xl font-bold text-center text-teal-400 mb-10">
+        <h1 className="text-5xl font-bold text-center text-teal-400 mb-10">
           Checkout
         </h1>
       </div>
