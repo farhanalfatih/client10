@@ -114,10 +114,11 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-
-          <button className="w-full bg-teal-500 hover:bg-teal-600 py-3 rounded-lg font-semibold text-white">
-            Bayar Sekarang
-          </button>
+          <a href="/page/success">
+            <button className="w-full bg-teal-500 hover:bg-teal-600 py-3 rounded-lg font-semibold text-white">
+              Bayar Sekarang
+            </button>
+          </a>
         </div>
       </div>
     </div>
