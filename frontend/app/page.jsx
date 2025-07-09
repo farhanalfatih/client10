@@ -4,7 +4,6 @@ import Navbar from "./Components/navbar/navbar";
 import Benner from "./Components/benner/Benner";
 import Produk from "./Components/produk/produk";
 import Footer from "./Components/footer/footer";
-import InstagramEmbed from "./Components/InstagramEmbed";
 import Marquee from "./Components/testimoni/testimoni";
 import { useEffect } from "react";
 
@@ -38,7 +37,6 @@ const page = () => {
             <Marquee />
           </div>
         </div>
-
         <div className="mt-30 p-10">
           <Footer />
         </div>

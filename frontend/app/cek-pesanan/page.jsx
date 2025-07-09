@@ -73,3 +73,37 @@ const Page = () => {
 };
 
 export default Page;
+
+
+// 'use client'; // jika pakai Next.js App Router
+
+// import { useEffect, useState } from 'react'
+// import { supabase } from '../../utils/supabase'
+
+// export default function ProdukList() {
+//   const [produk, setProduk] = useState([])
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const { data, error } = await supabase.from('products').select('*')
+//       if (error) console.error(error)
+//       else setProduk(data)
+//     }
+
+//     fetchData()
+//   }, [])
+
+//   return (
+//     <div>
+//       <h1>Daftar Produk</h1>
+//       <ul>
+//         {produk.map(p => (
+//           <li key={p.id}>
+//             <strong>{p.judul}</strong> - Rp{p.harga}
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   )
+// }
+

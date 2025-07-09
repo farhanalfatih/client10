@@ -1,23 +1,105 @@
-import React from "react";
-import Card from "./card";
-import { useEffect } from "react";
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import { supabase } from '../../../utils/supabase'
+import Link from 'next/link'
+
+// Kategori tetap statis
+const kategoriList = [
+  { id: 'all', nama: 'Semua', icon: null },
+  {
+    id: 'mcraft',
+    nama: 'MCraft',
+    icon: 'https://cdn-icons-png.flaticon.com/512/5969/5969422.png',
+  },
+  {
+    id: 'wynncraft',
+    nama: 'Wynncraft',
+    icon: 'https://cdn-icons-png.flaticon.com/512/5969/5969425.png',
+  },
+]
+
 const Produk = () => {
+  const [produkData, setProdukData] = useState([])
+  const [kategori, setKategori] = useState('all')
+
+  useEffect(() => {
+    const fetchProduk = async () => {
+      const { data, error } = await supabase.from('products').select('*')
+      if (error) {
+        console.error('Gagal ambil data produk:', error.message)
+      } else {
+        setProdukData(data)
+      }
+    }
+
+    fetchProduk()
+  }, [])
+
+  const filteredProduk =
+    kategori === 'all'
+      ? produkData
+      : produkData.filter((p) => p.kategori === kategori)
+
   return (
     <section className="px-4 mt-10">
-      <h2 className="px-4 text-black font-bold text-2xl absolute left-52 mt-[-30]">
-        Produk Populer
-      </h2>
+      <h2 className="text-black font-bold text-2xl mb-4 text-center">Produk Populer</h2>
 
-      <div className="flex flex-wrap justify-center gap-6">
-        <Card  />
-        <Card  />
-        <Card  />
-        <Card  />
-        <Card  />
-        <Card  />
+      {/* Filter Kategori */}
+      <div className="flex justify-center overflow-x-auto gap-3 px-1 py-2 mb-6">
+        {kategoriList.map((k) => (
+          <button
+            key={k.id}
+            onClick={() => setKategori(k.id)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition whitespace-nowrap ${
+              kategori === k.id
+                ? 'border-blue-500 bg-blue-100 text-blue-700'
+                : 'border-gray-200 bg-white text-black'
+            }`}
+          >
+            {k.icon && (
+              <img src={k.icon} alt={k.nama} className="w-6 h-6 object-contain" />
+            )}
+            <span className="text-sm font-medium">{k.nama}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Produk */}
+      <div className="flex flex-wrap justify-center">
+        {filteredProduk.length === 0 ? (
+          <p className="text-gray-500">Produk tidak ditemukan.</p>
+        ) : (
+          filteredProduk.map((produk) => (
+            <div key={produk.id} className="w-1/2 sm:w-1/2 md:w-1/3 lg:w-1/4 p-2">
+              <Link href={`/produk/${produk.id}`} className="block h-full">
+                <div className="rounded-2xl overflow-hidden shadow-lg bg-white p-4 h-full flex flex-col hover:shadow-xl transition">
+                  <img
+                    className="w-full h-40 object-cover rounded-xl"
+                    src={produk.gambar || '/Screenshot_1.png'}
+                    alt={produk.judul}
+                  />
+                  <div className="py-4 flex-1">
+                    <h2 className="text-base sm:text-lg font-bold text-gray-800 mb-2">
+                      {produk.judul}
+                    </h2>
+                    <div className="flex items-center gap-2 mt-3">
+                      <span className="text-red-600 font-semibold text-lg">
+                        Rp {produk.harga?.toLocaleString('id-ID') || 0}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Stok: {produk.stock ?? '-'}</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ))
+        )}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Produk;
+export default Produk
