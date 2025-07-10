@@ -34,14 +34,14 @@ const Navbar = () => {
           : "py-4 bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4 p-5">
+      <div className="container mx-auto px-4 p-3">
         <div className="navbarbox flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="logo">
+          <a href="/" className="logo">
             <img
-              src="https://placehold.co/600x400"
-              alt="Logo"
-              className="w-20 object-contain drop-shadow-lg"
+              src='https://tse3.mm.bing.net/th/id/OIP.P0NHhGE_xgDNSjEdu0NDrAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3'
+              alt="Logo senovhop"
+              className="mx-auto mb-6 w-15 h-15 rounded-full shadow-lg border-4"
             />
           </a>
 

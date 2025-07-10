@@ -1,126 +1,226 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState, useEffect } from 'react';
 
 export default function CheckoutPage() {
-  const [email, setEmail] = useState("rahif9504@gmail.com");
-  const [voucher, setVoucher] = useState("");
-  const [discount, setDiscount] = useState(0);
+  const [formSaved, setFormSaved] = useState(false);
+  const [openForm, setOpenForm] = useState(true);
+  const [produk, setProduk] = useState(null);
 
-  const price = 2500000;
+  // Form state
+  const [formData, setFormData] = useState({
+    nama: '',
+    hp: '',
+    email: '',
+  });
 
-  const checkVoucher = () => {
-    if (voucher.toUpperCase() === "SENOVSHOP") {
-      setDiscount(1000000);
-    } else {
-      setDiscount(0);
-      alert("Voucher tidak valid!");
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const stored = localStorage.getItem('checkoutProduk');
+    if (stored) {
+      setProduk(JSON.parse(stored));
+    }
+  }, []);
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.nama.trim()) newErrors.nama = 'Nama wajib diisi';
+    if (!formData.hp.trim()) newErrors.hp = 'Nomor HP wajib diisi';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email wajib diisi';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Format email tidak valid';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSimpan = () => {
+    if (validateForm()) {
+      setFormSaved(true);
+      setOpenForm(false);
     }
   };
 
-  const finalPrice = price - discount;
+  const handleEdit = () => {
+    setOpenForm(true);
+    setFormSaved(false);
+  };
+
+  if (!produk) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Memuat data produk...</p>
+      </main>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#0f1e2e] text-white px-4 py-10 ">
-      <div>
+    <main className="min-h-screen bg-white text-black">
+      {/* Header */}
+      <div className="flex bg-blue-950 p-10">
         <img
           src="https://tse3.mm.bing.net/th/id/OIP.P0NHhGE_xgDNSjEdu0NDrAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
-          alt="Checkout Logo"
-          className="mx-auto mb-6 w-32 h-32 rounded-full shadow-lg border-4 border-teal-400"
+          className="mx-auto mb-6 w-20 h-20 rounded-full shadow-lg border-4"
+          alt="logo"
         />
-        <h1 className="text-5xl font-bold text-center text-teal-400 mb-10">
-          Checkout
-        </h1>
       </div>
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-[#192a3e] rounded-xl p-4 shadow-lg">
-          <div className="p-2">
-            <h2 className="text-xl font-semibold mb-1">
-              Minecraft Java Dan Badrock
-            </h2>
-            <a href="#" className="text-sm text-teal-400 hover:underline">
-              Detail product
-            </a>
+
+      {/* Konten */}
+      <div className="max-w-7xl mx-auto py-10 px-4 grid md:grid-cols-3 gap-6">
+        {/* Kiri */}
+        <div className="md:col-span-2 space-y-6">
+          <h2 className="text-xl font-semibold">Pembayaran</h2>
+
+          {/* Produk */}
+          <div className="flex items-center border p-4 rounded-md gap-4">
+            <img
+              src={produk.gambar?.split(',')[0] || "/placeholder.jpg"}
+              alt={produk.judul}
+              className="w-14 h-14 rounded-md object-cover"
+            />
+            <div className="flex-1">
+              <h4 className="font-semibold text-sm">{produk.judul}</h4>
+              <p className="text-xs text-gray-500">{produk.kategori}</p>
+            </div>
+            <div className="text-right text-sm font-medium">
+              Rp{produk.harga?.toLocaleString('id-ID')} x 1
+            </div>
           </div>
-          <img
-            src="/Screenshot_1.png"
-            alt=""
-            className="w-full h-auto rounded-lg mb-4"
-          />
-        </div>
 
-        <div className="bg-[#192a3e] rounded-xl p-6 shadow-lg space-y-6">
-          <div className="mt-5">
-            <div>
-              <label className="block text-sm mb-1">Gmail:</label>
-              <input
-                type="email"
-                className="w-full bg-[#0f1e2e] border border-gray-600 rounded-lg p-2 text-white"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block text-sm mb-1 mt-5">Nomor Telpon:</label>
-              <div className=""></div>
-              <input
-                type="number"
-                className="w-full bg-[#0f1e2e] border border-gray-600 rounded-lg p-2 text-white"
-                // value={}
-              />
-              <p className="text-xs text-gray-400 mt-2">
-                Pastikan Email dan Nomor Telpon yang Anda masukkan benar. karna
-                Kami akan mengirimkan informasi selanjutnya malalui Gmail yang
-                Anda masukkan.
-              </p>
-            </div>
-
-            {/* Voucher */}
-            <div>
-              <label className="block text-sm mb-1 mt-5">Voucher</label>
-              <div className="flex">
+          {/* Formulir Pembelian */}
+          <details open={openForm && !formSaved} className="border rounded-md">
+            <summary className="cursor-pointer font-semibold p-4 bg-gray-100">
+              Formulir Pembelian
+            </summary>
+            <div className="p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Nama</label>
                 <input
                   type="text"
-                  placeholder="SENOVSHOP"
-                  className="flex-1 bg-[#0f1e2e] border border-gray-600 rounded-l-lg p-2 text-white"
-                  value={voucher}
-                  onChange={(e) => setVoucher(e.target.value)}
+                  placeholder="Nama lengkap"
+                  className="w-full border p-2 rounded"
+                  value={formData.nama}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nama: e.target.value })
+                  }
                 />
-                <button
-                  onClick={checkVoucher}
-                  className="bg-teal-500 hover:bg-teal-600 px-4 rounded-r-lg text-white font-medium"
-                >
-                  Check
-                </button>
+                {errors.nama && (
+                  <p className="text-xs text-red-500 mt-1">{errors.nama}</p>
+                )}
               </div>
-            </div>
 
-            {/* Order Summary */}
-            <div className="border-t border-gray-700 pt-4 space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>minecraft java dan badrock</span>
-                <span>Rp {price.toLocaleString()}</span>
+              <div>
+                <label className="block text-sm font-medium mb-1">Nomor Telepon</label>
+                <input
+                  type="tel"
+                  placeholder="08xxxxxxxxxx"
+                  className="w-full border p-2 rounded"
+                  value={formData.hp}
+                  onChange={(e) =>
+                    setFormData({ ...formData, hp: e.target.value })
+                  }
+                />
+                {errors.hp && (
+                  <p className="text-xs text-red-500 mt-1">{errors.hp}</p>
+                )}
               </div>
-              <div className="flex justify-between text-gray-400">
-                <span>Subtotal</span>
-                <span>Rp {price.toLocaleString()}</span>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Email (Gmail)</label>
+                <input
+                  type="email"
+                  placeholder="email@gmail.com"
+                  className="w-full border p-2 rounded"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+                {errors.email && (
+                  <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                )}
               </div>
-              <div className="flex justify-between text-green-400">
-                <span>Diskon</span>
-                <span>- Rp {discount.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between font-bold text-lg border-t border-gray-600 pt-2">
-                <span>Total</span>
-                <span>Rp {finalPrice.toLocaleString()}</span>
-              </div>
+
+              <p className="text-sm text-gray-500">
+                Isi formulir ini dengan benar karena akun akan dikirim ke Gmail.
+              </p>
+
+              <button
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+                onClick={handleSimpan}
+              >
+                Simpan
+              </button>
+            </div>
+          </details>
+
+          {/* Metode Pembayaran */}
+          <details className="border rounded-md" open={formSaved}>
+            <summary className="cursor-pointer font-semibold p-4 bg-gray-100">
+              Metode Pembayaran
+            </summary>
+            <div className="p-4">
+              {!formSaved ? (
+                <p className="text-sm text-red-500">
+                  Harap isi dan simpan formulir terlebih dahulu.
+                </p>
+              ) : (
+                <div className="border p-4 rounded-md flex justify-between items-center">
+                  <div>
+                    <img src="/gopay.png" alt="Gopay" className="w-20 mb-1" />
+                    <p className="text-sm text-gray-500">Biaya: IDR 10.693</p>
+                  </div>
+                  <button className="text-sm px-3 py-1 border rounded text-blue-500">
+                    Ganti
+                  </button>
+                </div>
+              )}
+            </div>
+          </details>
+        </div>
+
+        {/* Ringkasan Pembayaran */}
+        <div className="bg-gray-50 p-6 rounded-md shadow">
+          <h3 className="font-semibold mb-4">Detail Pembayaran</h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span>Total Pesanan</span>
+              <span>Rp{produk.harga?.toLocaleString('id-ID')}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Biaya Admin</span>
+              <span>Rp10.693</span>
+            </div>
+            <hr />
+            <div className="flex justify-between font-semibold text-base">
+              <span>Total Pembayaran</span>
+              <span>
+                Rp
+                {produk.harga
+                  ? (produk.harga + 10693).toLocaleString('id-ID')
+                  : 0}
+              </span>
             </div>
           </div>
-          <a href="/page/success">
-            <button className="w-full bg-teal-500 hover:bg-teal-600 py-3 rounded-lg font-semibold text-white">
-              Bayar Sekarang
-            </button>
-          </a>
+
+          <button
+            className={`mt-6 w-full py-2 rounded font-medium ${
+              formSaved
+                ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+            disabled={!formSaved}
+          >
+            Bayar
+          </button>
+          <p className="mt-2 text-xs text-gray-500 text-center">
+            Pembayaran Aman 100% Dijamin oleh{" "}
+            <span className="text-blue-600 font-medium">Trade Guard</span>
+          </p>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

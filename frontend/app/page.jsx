@@ -11,9 +11,9 @@ const page = () => {
   return (
     <>
       <div className="">
-        <div className="fixed top-0 left-0 w-full z-50">
+        {/* <div className="fixed top-0 left-0 w-full z-50">
           <Navbar />
-        </div>
+        </div> */}
 
         <div className="mt-40 z-40">
           <Benner />
@@ -33,7 +33,7 @@ const page = () => {
           <h2 className="px-4 text-black font-bold text-2xl absolute left-52 mt-[-30]">
             Apa kata mereka
           </h2>
-          <div className="max-w-6xl mx-auto p-10 bg-white shadow-lg rounded-lg transition-all duration-300">
+          <div className="max-w-6xl mx-auto p-5 bg-white shadow-lg rounded-lg transition-all duration-300">
             <Marquee />
           </div>
         </div>

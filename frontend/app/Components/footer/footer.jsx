@@ -44,7 +44,7 @@ const Footer = () => {
           <h3 className="font-semibold mb-2">Ikuti Kami</h3>
           <div className="flex space-x-3 mt-1">
             <a
-              href="https://www.instagram.com/golroblox"
+              href="https://www.instagram.com"
               target="_blank"
               className="text-gray-600 hover:text-black text-lg"
               rel="noopener noreferrer"
