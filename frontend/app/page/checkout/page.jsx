@@ -1,5 +1,5 @@
-'use client';
-import { useState, useEffect } from 'react';
+"use client";
+import { useState, useEffect } from "react";
 
 export default function CheckoutPage() {
   const [formSaved, setFormSaved] = useState(false);
@@ -8,15 +8,15 @@ export default function CheckoutPage() {
 
   // Form state
   const [formData, setFormData] = useState({
-    nama: '',
-    hp: '',
-    email: '',
+    nama: "",
+    hp: "",
+    email: "",
   });
 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    const stored = localStorage.getItem('checkoutProduk');
+    const stored = localStorage.getItem("checkoutProduk");
     if (stored) {
       setProduk(JSON.parse(stored));
     }
@@ -24,12 +24,12 @@ export default function CheckoutPage() {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.nama.trim()) newErrors.nama = 'Nama wajib diisi';
-    if (!formData.hp.trim()) newErrors.hp = 'Nomor HP wajib diisi';
+    if (!formData.nama.trim()) newErrors.nama = "Nama wajib diisi";
+    if (!formData.hp.trim()) newErrors.hp = "Nomor HP wajib diisi";
     if (!formData.email.trim()) {
-      newErrors.email = 'Email wajib diisi';
+      newErrors.email = "Email wajib diisi";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Format email tidak valid';
+      newErrors.email = "Format email tidak valid";
     }
 
     setErrors(newErrors);
@@ -67,6 +67,29 @@ export default function CheckoutPage() {
         />
       </div>
 
+      <div className="max-w-7xl mx-auto mt-6 ">
+        <button
+          onClick={() => window.history.back()}
+          className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+           <a href="/">Kembali</a>
+        </button>
+      </div>
+
       {/* Konten */}
       <div className="max-w-7xl mx-auto py-10 px-4 grid md:grid-cols-3 gap-6">
         {/* Kiri */}
@@ -76,7 +99,7 @@ export default function CheckoutPage() {
           {/* Produk */}
           <div className="flex items-center border p-4 rounded-md gap-4">
             <img
-              src={produk.gambar?.split(',')[0] || "/placeholder.jpg"}
+              src={produk.gambar?.split(",")[0] || "/placeholder.jpg"}
               alt={produk.judul}
               className="w-14 h-14 rounded-md object-cover"
             />
@@ -85,7 +108,7 @@ export default function CheckoutPage() {
               <p className="text-xs text-gray-500">{produk.kategori}</p>
             </div>
             <div className="text-right text-sm font-medium">
-              Rp{produk.harga?.toLocaleString('id-ID')} x 1
+              Rp{produk.harga?.toLocaleString("id-ID")} x {produk.qty}
             </div>
           </div>
 
@@ -112,7 +135,9 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Nomor Telepon</label>
+                <label className="block text-sm font-medium mb-1">
+                  Nomor Telepon
+                </label>
                 <input
                   type="tel"
                   placeholder="08xxxxxxxxxx"
@@ -128,7 +153,9 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Email (Gmail)</label>
+                <label className="block text-sm font-medium mb-1">
+                  Email (Gmail)
+                </label>
                 <input
                   type="email"
                   placeholder="email@gmail.com"
@@ -187,7 +214,11 @@ export default function CheckoutPage() {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>Total Pesanan</span>
-              <span>Rp{produk.harga?.toLocaleString('id-ID')}</span>
+              <span>
+                Rp
+                {produk.qty?.toLocaleString("id-ID") *
+                  produk.harga?.toLocaleString("id-ID")}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Biaya Admin</span>
@@ -199,7 +230,7 @@ export default function CheckoutPage() {
               <span>
                 Rp
                 {produk.harga
-                  ? (produk.harga + 10693).toLocaleString('id-ID')
+                  ? (produk.harga + 10693).toLocaleString("id-ID")
                   : 0}
               </span>
             </div>
@@ -208,8 +239,8 @@ export default function CheckoutPage() {
           <button
             className={`mt-6 w-full py-2 rounded font-medium ${
               formSaved
-                ? 'bg-orange-500 hover:bg-orange-600 text-white'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? "bg-orange-500 hover:bg-orange-600 text-white"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
             disabled={!formSaved}
           >
