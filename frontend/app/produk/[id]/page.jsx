@@ -1,8 +1,9 @@
 import { supabase } from "../../../utils/supabase";
 import ProductDetailClient from "./ProductDetailClient";
 
-export default async function Page({ params }) {
-  const { id } = params;
+
+export default async function Page(props) {
+  const { id } = props.params;
 
   const { data: produk, error } = await supabase
     .from("products")

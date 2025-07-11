@@ -73,44 +73,41 @@ const Produk = () => {
       </div>
 
       {/* Produk */}
-      <div className="flex flex-wrap justify-center">
-        {filteredProduk.length === 0 ? (
-          <p className="text-gray-500">Produk tidak ditemukan.</p>
-        ) : (
-          filteredProduk.map((produk) => (
-            <div
-              key={produk.id}
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
-            >
-              <Link href={`/produk/${produk.id}`} className="block h-full">
-                <div className="rounded-2xl overflow-hidden shadow-lg bg-white p-4 h-full flex flex-col hover:shadow-xl transition">
-                  <img
-                    className="w-full h-40 object-cover rounded-xl"
-                    src={produk.gambar || "https://placehold.co/600x400"}
-                    alt={produk.judul}
-                  />
-                  <div className="py-4 flex-1">
-                    <h2 className="text-base sm:text-lg font-bold text-gray-800 mb-2">
-                      {produk.judul}
-                    </h2>
-                    <div className="flex items-center gap-2 mt-3">
-                      <span className="text-red-600 font-semibold text-lg">
-                        Rp {produk.harga?.toLocaleString("id-ID") || 0}
-                      </span>
+      {filteredProduk.length === 0 ? (
+        <p className="text-gray-500 text-center">Produk tidak ditemukan.</p>
+      ) : (
+        <div className="mx-auto max-w-screen-xl">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filteredProduk.map((produk) => (
+              <div key={produk.id}>
+                <Link href={`/produk/${produk.id}`} className="block h-full">
+                  <div className="rounded-2xl overflow-hidden shadow-lg bg-white p-4 h-full flex flex-col hover:shadow-xl transition">
+                    <img
+                      className="w-full h-40 object-cover rounded-xl"
+                      src={produk.gambar || "https://placehold.co/600x400"}
+                      alt={produk.judul}
+                    />
+                    <div className="py-4 flex-1">
+                      <h2 className="text-base sm:text-lg font-bold text-gray-800 mb-2">
+                        {produk.judul}
+                      </h2>
+                      <div className="flex items-center gap-2 mt-3">
+                        <span className="text-red-600 font-semibold text-lg">
+                          Rp {produk.harga?.toLocaleString("id-ID") || 0}
+                        </span>
+                      </div>
+                      <p className="p-2">express</p>
+                      <p className="text-sm text-gray-500">
+                        Stok: {produk.stock ?? "-"}
+                      </p>
                     </div>
-                    <p className=" p-2">
-                      express
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Stok: {produk.stock ?? "-"}
-                    </p>
                   </div>
-                </div>
-              </Link>
-            </div>
-          ))
-        )}
-      </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
