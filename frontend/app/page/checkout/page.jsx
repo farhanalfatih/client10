@@ -63,7 +63,7 @@ export default function CheckoutPage() {
         <img
           src="https://tse3.mm.bing.net/th/id/OIP.P0NHhGE_xgDNSjEdu0NDrAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
           className="mx-auto mb-6 w-20 h-20 rounded-full shadow-lg border-4"
-          alt="logo"
+          alt="checkout logo"
         />
       </div>
 
