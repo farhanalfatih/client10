@@ -20,7 +20,11 @@ const page = () => {
         </div>
 
         <div className="mt-20">
-            <div className="max-w-6xl mx-auto p-10 bg-white shadow-lg rounded-lg transition-all duration-300"></div>
+            <div className="max-w-6xl mx-auto p-10 bg-white shadow-lg rounded-lg transition-all duration-300">
+              <h1 className="font-bold text-2xl text-center">
+                kamu lagi cari kebutuhan minecrft apa?
+              </h1>
+            </div>
         </div>
 
         <div className="mt-30 z-30">
@@ -29,17 +33,18 @@ const page = () => {
           </div>
         </div>
 
-        <div className="mt-30 z-20">
+        {/* <div className="mt-30 z-20">
           <h2 className="px-4 text-black font-bold text-2xl absolute left-52 mt-[-30]">
             Apa kata mereka
           </h2>
           <div className="max-w-6xl mx-auto p-5 bg-white shadow-lg rounded-lg transition-all duration-300">
             <Marquee />
           </div>
-        </div>
-        <div className="mt-30 p-10">
+        </div> */}
+
+        {/* <div className="mt-30 p-10">
           <Footer />
-        </div>
+        </div> */}
       </div>
     </>
   );

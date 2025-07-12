@@ -37,13 +37,16 @@ const Navbar = () => {
       <div className="container mx-auto px-4 p-3">
         <div className="navbarbox flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="logo">
-            <img
-              src='https://tse3.mm.bing.net/th/id/OIP.P0NHhGE_xgDNSjEdu0NDrAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3'
-              alt="Logo senovhop"
-              className="mx-auto mb-6 w-15 h-15 rounded-full shadow-lg border-4"
-            />
-          </a>
+          <div className="flex items-center justify-between gap-5">
+            <a href="/" className="logo">
+              <img
+                src="https://tse3.mm.bing.net/th/id/OIP.P0NHhGE_xgDNSjEdu0NDrAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
+                alt="Logo senovhop"
+                className="w-10 h-10 rounded-full shadow-lg border-4"
+              />
+            </a>
+            <h1 className="text-sm font-bold">SENOVSHOP</h1>
+          </div>
 
           <ul
             className={` md:flex md:items-center md:justify-center md:gap-8 md:flex-1 md:mx-8
@@ -68,7 +71,6 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/* Login Button */}
           <div className="hidden md:block">
             <a
               href="/auth/login"
@@ -76,18 +78,6 @@ const Navbar = () => {
             >
               {/* <i className="ri-login-box-line text-white mr-2"></i> Login */}
               Discord
-            </a>
-          </div>
-
-          {/* Login button for mobile (inside menu) */}
-          <div
-            className={`md:hidden fixed ${menuAktive} top-80 w-full px-6 transition-all duration-300`}
-          >
-            <a
-              href="aurh/login"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 inline-block"
-            >
-              <i className="ri-login-box-line text-white mr-2"></i> Login
             </a>
           </div>
 

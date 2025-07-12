@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../utils/supabase";
 import Link from "next/link";
+import { RiPaintBrushLine, RiFlashlightLine } from "react-icons/ri";
 
 // Kategori tetap statis
 const kategoriList = [
@@ -74,37 +75,79 @@ const Produk = () => {
 
       {/* Produk */}
       {filteredProduk.length === 0 ? (
-        <p className="text-gray-500 text-center">Produk tidak ditemukan.</p>
+        <p className="text-gray-500 text-center p-10">Produk tidak ditemukan.</p>
       ) : (
         <div className="mx-auto max-w-screen-xl">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredProduk.map((produk) => (
-              <div key={produk.id}>
-                <Link href={`/produk/${produk.id}`} className="block h-full">
-                  <div className="rounded-2xl overflow-hidden shadow-lg bg-white p-4 h-full flex flex-col hover:shadow-xl transition">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            {filteredProduk.map((produk) => {
+              const hargaAsli = produk.harga_asli || produk.harga + 10000;
+              const diskonPersen = Math.round(
+                ((hargaAsli - produk.harga) / hargaAsli) * 100
+              );
+
+              return (
+                <Link href={`/produk/${produk.id}`} key={produk.id}>
+                  <div className="rounded-2xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition h-full flex flex-col">
                     <img
-                      className="w-full h-40 object-cover rounded-xl"
                       src={produk.gambar || "https://placehold.co/600x400"}
                       alt={produk.judul}
+                      className="w-full h-36 object-cover"
                     />
-                    <div className="py-4 flex-1">
-                      <h2 className="text-base sm:text-lg font-bold text-gray-800 mb-2">
+
+                    {/* Label */}
+                    <div className="px-4 pt-2">
+                      <span className="inline-flex items-center gap-1 bg-yellow-300 text-black text-xs font-semibold px-2 py-1 rounded-full">
+                        <RiPaintBrushLine className="text-sm" />
+                        {produk.kategori}
+                      </span>
+                    </div>
+
+                    {/* Info Produk */}
+                    <div className="px-4 pb-4 flex-1">
+                      <h2 className="text-sm sm:text-base font-bold text-gray-800 mb-1">
                         {produk.judul}
                       </h2>
-                      <div className="flex items-center gap-2 mt-3">
-                        <span className="text-red-600 font-semibold text-lg">
-                          Rp {produk.harga?.toLocaleString("id-ID") || 0}
-                        </span>
+
+                      <div className="flex justify-between text-xs text-gray-600 items-center mt-2">
+                        <div className="flex items-center gap-1">
+                          <RiFlashlightLine />
+                          <span>PEMBUATAN CEPAT</span>
+                        </div>
+                        <span>Stok: {produk.stock ?? "-"}</span>
                       </div>
-                      <p className="p-2">express</p>
-                      <p className="text-sm text-gray-500">
-                        Stok: {produk.stock ?? "-"}
-                      </p>
+
+                      <div className="mt-2">
+                        <p className="text-xs text-gray-500 line-through">
+                          Dari Rp{" "}
+                          {(
+                            produk.harga_asli || produk.harga + 10000
+                          ).toLocaleString("id-ID")}
+                        </p>
+                        <p className="text-green-600 text-xs font-bold">
+                          -
+                          {Math.round(
+                            ((produk.harga_asli - produk.harga) /
+                              produk.harga_asli) *
+                              100
+                          ) || 0}
+                          %
+                        </p>
+                        <p className="text-lg font-bold text-black">
+                          Rp {produk.harga?.toLocaleString("id-ID")}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Tombol */}
+                    <div className="p-4 pt-0">
+                      <button className="w-full bg-blue-500 text-white font-semibold py-2 rounded-xl hover:bg-blue-600 transition">
+                        Beli Sekarang
+                      </button>
                     </div>
                   </div>
                 </Link>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

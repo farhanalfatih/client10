@@ -5,9 +5,9 @@ import Footer from  "../Components/footer/footer";
 const page = () => {
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-50">
+      {/* <div className="fixed top-0 left-0 w-full z-50">
         <Navbar />
-      </div>
+      </div> */}
       <div className="mt-50">
         <div className="max-w-6xl mx-auto p-10 bg-white shadow-lg rounded-lg transition-all duration-300">
           <h1 className="text-2xl font-bold mb-4">Bantuan</h1>
@@ -25,9 +25,9 @@ const page = () => {
         </div>
       </div>
 
-        <div className="mt-50 p-10">
+        {/* <div className="mt-50 p-10">
           <Footer />
-        </div>
+        </div> */}
     </>
   );
 };
