@@ -1,29 +1,41 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../utils/supabase";
 import Link from "next/link";
 import { RiPaintBrushLine, RiFlashlightLine } from "react-icons/ri";
 
-// Kategori tetap statis
+// Daftar kategori
 const kategoriList = [
   { id: "all", nama: "Semua", icon: null },
   {
     id: "skin",
-    nama: "skin",
+    nama: "Skin",
     icon: "https://cdn-icons-png.flaticon.com/512/5969/5969422.png",
   },
   {
     id: "minecraft",
-    nama: "minecraft",
+    nama: "Minecraft",
     icon: "https://cdn-icons-png.flaticon.com/512/5969/5969425.png",
+  },
+  {
+    id: "jasa-setup",
+    nama: "Jasa Setup",
+    icon: "https://cdn-icons-png.flaticon.com/512/1256/1256650.png",
   },
 ];
 
-const Produk = () => {
+const Produk = ({ category }) => {
   const [produkData, setProdukData] = useState([]);
-  const [kategori, setKategori] = useState("all");
+  const [kategoriAktif, setKategoriAktif] = useState("all");
 
+  // Update kategoriAktif saat props category berubah
+  useEffect(() => {
+    if (category) {
+      setKategoriAktif(category);
+    }
+  }, [category]);
+
+  // Fetch produk dari Supabase
   useEffect(() => {
     const fetchProduk = async () => {
       const { data, error } = await supabase.from("products").select("*");
@@ -38,9 +50,9 @@ const Produk = () => {
   }, []);
 
   const filteredProduk =
-    kategori === "all"
+    kategoriAktif === "all"
       ? produkData
-      : produkData.filter((p) => p.kategori === kategori);
+      : produkData.filter((p) => p.kategori === kategoriAktif);
 
   return (
     <section className="px-4 mt-10">
@@ -53,9 +65,9 @@ const Produk = () => {
           {kategoriList.map((k) => (
             <button
               key={k.id}
-              onClick={() => setKategori(k.id)}
+              onClick={() => setKategoriAktif(k.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition whitespace-nowrap ${
-                kategori === k.id
+                kategoriAktif === k.id
                   ? "border-blue-500 bg-blue-100 text-blue-700"
                   : "border-gray-200 bg-white text-black"
               }`}
@@ -75,7 +87,9 @@ const Produk = () => {
 
       {/* Produk */}
       {filteredProduk.length === 0 ? (
-        <p className="text-gray-500 text-center p-10">Produk tidak ditemukan.</p>
+        <p className="text-gray-500 text-center p-10">
+          Produk tidak ditemukan.
+        </p>
       ) : (
         <div className="mx-auto max-w-screen-xl">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
@@ -93,21 +107,16 @@ const Produk = () => {
                       alt={produk.judul}
                       className="w-full h-36 object-cover"
                     />
-
-                    {/* Label */}
                     <div className="px-4 pt-2">
                       <span className="inline-flex items-center gap-1 bg-yellow-300 text-black text-xs font-semibold px-2 py-1 rounded-full">
                         <RiPaintBrushLine className="text-sm" />
                         {produk.kategori}
                       </span>
                     </div>
-
-                    {/* Info Produk */}
                     <div className="px-4 pb-4 flex-1">
                       <h2 className="text-sm sm:text-base font-bold text-gray-800 mb-1">
                         {produk.judul}
                       </h2>
-
                       <div className="flex justify-between text-xs text-gray-600 items-center mt-2">
                         <div className="flex items-center gap-1">
                           <RiFlashlightLine />
@@ -115,30 +124,18 @@ const Produk = () => {
                         </div>
                         <span>Stok: {produk.stock ?? "-"}</span>
                       </div>
-
                       <div className="mt-2">
                         <p className="text-xs text-gray-500 line-through">
-                          Dari Rp{" "}
-                          {(
-                            produk.harga_asli || produk.harga + 10000
-                          ).toLocaleString("id-ID")}
+                          Dari Rp {hargaAsli.toLocaleString("id-ID")}
                         </p>
                         <p className="text-green-600 text-xs font-bold">
-                          -
-                          {Math.round(
-                            ((produk.harga_asli - produk.harga) /
-                              produk.harga_asli) *
-                              100
-                          ) || 0}
-                          %
+                          -{diskonPersen || 0}%
                         </p>
                         <p className="text-lg font-bold text-black">
                           Rp {produk.harga?.toLocaleString("id-ID")}
                         </p>
                       </div>
                     </div>
-
-                    {/* Tombol */}
                     <div className="p-4 pt-0">
                       <button className="w-full bg-blue-500 text-white font-semibold py-2 rounded-xl hover:bg-blue-600 transition">
                         Beli Sekarang
