@@ -18,8 +18,8 @@ const kategoriList = [
     icon: "https://cdn-icons-png.flaticon.com/512/5969/5969425.png",
   },
   {
-    id: "jasa-setup",
-    nama: "Jasa Setup",
+    id: "marketplace minecraft",
+    nama: "marketplace minecraft",
     icon: "https://cdn-icons-png.flaticon.com/512/1256/1256650.png",
   },
 ];
@@ -108,10 +108,29 @@ const Produk = ({ category }) => {
                       className="w-full h-36 object-cover"
                     />
                     <div className="px-4 pt-2">
-                      <span className="inline-flex items-center gap-1 bg-yellow-300 text-black text-xs font-semibold px-2 py-1 rounded-full">
-                        <RiPaintBrushLine className="text-sm" />
-                        {produk.kategori}
-                      </span>
+                      <div className="mb-2">
+                        {produk.kategori === "minecraft" && (
+                          <img
+                            src="/Label-Kategori-Minecraft-Premium.png"
+                            alt="Minecraft Premium"
+                            className="h-6"
+                          />
+                        )}
+                        {produk.kategori === "skin" && (
+                          <img
+                            src="/Label-Kategori-Jasa-Skin.png"
+                            alt="Jasa Skin"
+                            className="h-6"
+                          />
+                        )}
+                        {produk.kategori === "marketplace minecraft" && (
+                          <img
+                            src="/Label-Kategori-Marketplace-Minecraft.png"
+                            alt="Marketplace Minecraft"
+                            className="h-6"
+                          />
+                        )}
+                      </div>
                     </div>
                     <div className="px-4 pb-4 flex-1">
                       <h2 className="text-sm sm:text-base font-bold text-gray-800 mb-1">

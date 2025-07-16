@@ -51,7 +51,7 @@ const Page = () => {
               <tbody>
                 {/* Contoh data */}
                 <tr className="bg-white hover:bg-gray-100">
-                  <td className="px-6 py-4 whitespace-nowrap">123456</td>
+                  <td className="px-6 py-4 whitespace-nowrap">0xf362gqaf0j98833j</td>
                   <td className="px-6 py-4 whitespace-nowrap">01/01/2023</td>
                   <td className="px-6 py-4 whitespace-nowrap">Diproses</td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -73,37 +73,4 @@ const Page = () => {
 };
 
 export default Page;
-
-
-// 'use client'; // jika pakai Next.js App Router
-
-// import { useEffect, useState } from 'react'
-// import { supabase } from '../../utils/supabase'
-
-// export default function ProdukList() {
-//   const [produk, setProduk] = useState([])
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const { data, error } = await supabase.from('products').select('*')
-//       if (error) console.error(error)
-//       else setProduk(data)
-//     }
-
-//     fetchData()
-//   }, [])
-
-//   return (
-//     <div>
-//       <h1>Daftar Produk</h1>
-//       <ul>
-//         {produk.map(p => (
-//           <li key={p.id}>
-//             <strong>{p.judul}</strong> - Rp{p.harga}
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   )
-// }
 

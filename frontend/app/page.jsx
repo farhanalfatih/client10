@@ -74,7 +74,17 @@ const Page = () => {
 
       {/* 👇 Bagian Produk berdasarkan category */}
       <div className="mt-30 z-30" id="produk">
-       <Produk category={selectedCategory} />
+        <Produk category={selectedCategory} />
+      </div>
+
+      <div className="mt-40">
+        <h2 className="text-2xl font-bold text-center text-black mb-4">
+          Testimoni kami
+        </h2>
+        <p className="text-center text-gray-600 mb-6">
+          Yuk intip orang orang yg puas dengan layanan atau produk kami!!!.
+        </p>
+        <Marquee />
       </div>
     </div>
   );
