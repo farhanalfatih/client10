@@ -48,6 +48,47 @@ export default function CheckoutPage() {
     setFormSaved(false);
   };
 
+  const handleBayar = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nama: formData.nama,
+          gmail: formData.email,
+          hpnomor_telpon: formData.hp,
+          produk_id: produk.id, // atau sesuaikan nama field
+          harga: produk.harga,
+          qty: produk.qty,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.token) {
+        // Load Midtrans Snap popup
+        window.snap.pay(data.token, {
+          onSuccess: function (result) {
+            alert("Pembayaran sukses!");
+            console.log(result);
+          },
+          onPending: function (result) {
+            alert("Menunggu pembayaran...");
+          },
+          onError: function (result) {
+            alert("Pembayaran gagal!");
+          },
+        });
+      } else {
+        alert("Gagal memulai pembayaran");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   if (!produk) {
     return (
       <main className="min-h-screen flex items-center justify-center">
@@ -86,7 +127,7 @@ export default function CheckoutPage() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-           <a href="/">Kembali</a>
+          <a href="/">Kembali</a>
         </button>
       </div>
 
@@ -243,6 +284,7 @@ export default function CheckoutPage() {
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
             disabled={!formSaved}
+            onClick={handleBayar}
           >
             Bayar
           </button>
