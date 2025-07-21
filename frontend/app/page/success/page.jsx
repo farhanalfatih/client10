@@ -5,13 +5,23 @@ import { useEffect, useState } from "react";
 
 export default function SuccessPage() {
   const router = useRouter();
-  const orderNumber = "1234567890";
+  const [orderNumber, setOrderNumber] = useState("");
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const id = localStorage.getItem("orderId");
+    if (id) {
+      setOrderNumber(id);
+    } else {
+      // Kalau tidak ada ID, redirect kembali
+      router.push("/");
+    }
+  }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(orderNumber);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000); // Reset notif copy
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (

@@ -19,6 +19,7 @@
     "express": "^5.1.0",
     "midtrans-client": "^1.4.3",
     "nodemailer": "^7.0.5",
+    "serverless-http": "^3.2.0",
     "uuid": "^11.1.0",
     "vercel": "^44.5.0"
   },

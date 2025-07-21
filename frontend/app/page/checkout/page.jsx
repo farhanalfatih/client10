@@ -1,12 +1,14 @@
 "use client";
+
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
   const [formSaved, setFormSaved] = useState(false);
   const [openForm, setOpenForm] = useState(true);
   const [produk, setProduk] = useState(null);
+  const router = useRouter();
 
-  // Form state
   const [formData, setFormData] = useState({
     nama: "",
     hp: "",
@@ -50,7 +52,7 @@ export default function CheckoutPage() {
 
   const handleBayar = async () => {
     try {
-      const response = await fetch("http://localhost:3001/order", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,34 +60,43 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           nama: formData.nama,
           gmail: formData.email,
-          hpnomor_telpon: formData.hp,
-          produk_id: produk.id, // atau sesuaikan nama field
-          harga: produk.harga,
-          qty: produk.qty,
+          nomor_telpon: formData.hp,
+          idproduct: produk.id,
+          harga_asli: produk.harga,
         }),
       });
 
       const data = await response.json();
 
-      if (data.token) {
-        // Load Midtrans Snap popup
-        window.snap.pay(data.token, {
-          onSuccess: function (result) {
-            alert("Pembayaran sukses!");
-            console.log(result);
-          },
-          onPending: function (result) {
-            alert("Menunggu pembayaran...");
-          },
-          onError: function (result) {
-            alert("Pembayaran gagal!");
-          },
-        });
+      if (data.idorder) {
+        localStorage.setItem("orderId", data.idorder);
+
+        if (data.token && window.snap) {
+          window.snap.pay(data.token, {
+            onSuccess: (result) => {
+              alert("Pembayaran sukses!");
+              console.log(result);
+              router.push("/page/success");
+            },
+            onPending: (result) => {
+              alert("Menunggu pembayaran...");
+              console.log(result);
+            },
+            onError: (result) => {
+              alert("Pembayaran gagal!");
+              console.error(result);
+            },
+          });
+        } else {
+          // Jika tidak ada Snap, langsung redirect saja
+          router.push("/success");
+        }
       } else {
-        alert("Gagal memulai pembayaran");
+        alert("❌ Gagal memulai pembayaran atau data tidak valid");
       }
     } catch (error) {
       console.error(error);
+      alert("❌ Terjadi kesalahan saat memproses pembayaran");
     }
   };
 
@@ -108,7 +119,7 @@ export default function CheckoutPage() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto mt-6 ">
+      <div className="max-w-7xl mx-auto mt-6">
         <button
           onClick={() => window.history.back()}
           className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline"
@@ -127,7 +138,7 @@ export default function CheckoutPage() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          <a href="/">Kembali</a>
+          <span>Kembali</span>
         </button>
       </div>
 
@@ -153,12 +164,13 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Formulir Pembelian */}
+          {/* Formulir */}
           <details open={openForm && !formSaved} className="border rounded-md">
             <summary className="cursor-pointer font-semibold p-4 bg-gray-100">
               Formulir Pembelian
             </summary>
             <div className="p-4 space-y-4">
+              {/* Nama */}
               <div>
                 <label className="block text-sm font-medium mb-1">Nama</label>
                 <input
@@ -175,6 +187,7 @@ export default function CheckoutPage() {
                 )}
               </div>
 
+              {/* No HP */}
               <div>
                 <label className="block text-sm font-medium mb-1">
                   Nomor Telepon
@@ -193,6 +206,7 @@ export default function CheckoutPage() {
                 )}
               </div>
 
+              {/* Email */}
               <div>
                 <label className="block text-sm font-medium mb-1">
                   Email (Gmail)
@@ -257,8 +271,7 @@ export default function CheckoutPage() {
               <span>Total Pesanan</span>
               <span>
                 Rp
-                {produk.qty?.toLocaleString("id-ID") *
-                  produk.harga?.toLocaleString("id-ID")}
+                {produk.qty * produk.harga?.toLocaleString("id-ID")}
               </span>
             </div>
             <div className="flex justify-between">
