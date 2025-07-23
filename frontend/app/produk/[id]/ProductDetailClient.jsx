@@ -9,9 +9,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerDescription,
   DrawerFooter,
-  DrawerClose,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
@@ -37,145 +35,168 @@ export default function ProductDetailClient({ produk }) {
 
   return (
     <div className="min-h-screen py-10 px-4 mt-20">
-      {/* Konten Utama Produk */}
-      <div className="max-w-6xl mx-auto p-6 bg-white shadow-xl rounded-2xl flex flex-col md:flex-row gap-8">
-        <div className="w-full md:w-1/2">
+      {/* 🖥️ Desktop Mode: 60% - 40% Grid */}
+      <div className="max-w-6xl mx-auto hidden md:grid grid-cols-5 gap-8">
+        {/* Kiri - Produk */}
+        <div className="col-span-3 bg-white shadow-xl rounded-2xl p-6">
           <ProductImageSlider images={images} />
+          <h1 className="text-2xl font-bold text-gray-800 mt-4 mb-2">
+            {produk.judul}
+          </h1>
+          <p className="text-lg text-gray-500 mb-2">
+            Stok:{" "}
+            <span className="font-semibold text-gray-700">
+              {produk.stock ?? "-"}
+            </span>
+          </p>
+          <p className="text-2xl font-bold text-red-600 mb-4">
+            Rp {produk.harga?.toLocaleString("id-ID") || 0}
+          </p>
+          <div className="text-sm text-gray-600 whitespace-pre-line">
+            {produk.deskripsi || "Tidak ada deskripsi produk."}
+          </div>
         </div>
 
-        <div className="w-full md:w-1/2 flex flex-col justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
-              {produk.judul}
-            </h1>
-
-            <p className="text-lg text-gray-500 mb-2">
-              Stok:{" "}
-              <span className="font-semibold text-gray-700">
-                {produk.stock ?? "-"}
-              </span>
-            </p>
-
-            <p className="text-2xl font-bold text-red-600 mb-6">
-              Rp {produk.harga?.toLocaleString("id-ID") || 0}
-            </p>
-          </div>
-
-          {/* Tombol Beli untuk Tablet & Laptop */}
-          <div className="hidden md:block mt-4">
-            <button
-              onClick={() => setOpenDrawer(true)}
-              className="w-full md:w-auto px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition font-semibold"
-            >
-              Beli Sekarang
-            </button>
-          </div>
-
-          {/* Drawer Trigger */}
-          <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
-            <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
-              <DrawerTrigger asChild>
-                <button className="w-full py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition font-semibold">
-                  Beli Sekarang
+        {/* Kanan - Checkout */}
+        <div className="col-span-2 bg-white shadow-xl rounded-2xl p-6 flex flex-col justify-between">
+          <div className="space-y-4 mt-20">
+            {/* Qty */}
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium">Jumlah</p>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                  className="w-8 h-8 text-xl rounded-full bg-gray-200 hover:bg-gray-300"
+                >
+                  −
                 </button>
-              </DrawerTrigger>
+                <span className="w-10 text-center border rounded px-2 py-1">
+                  {qty}
+                </span>
+                <button
+                  onClick={() => setQty((prev) => prev + 1)}
+                  className="w-8 h-8 text-xl rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                >
+                  +
+                </button>
+              </div>
+            </div>
 
-              <DrawerContent>
-                <DrawerHeader className="border-b">
-                  <DrawerTitle className="text-lg font-bold">
-                    Informasi Pesanan
-                  </DrawerTitle>
-                </DrawerHeader>
+            {/* Subtotal */}
+            <div className="flex justify-between items-center border-t pt-4">
+              <p className="font-semibold text-sm">Subtotal</p>
+              <p className="font-bold text-orange-600">
+                Rp {(qty * produk.harga).toLocaleString("id-ID")}
+              </p>
+            </div>
 
-                <div className="px-4 py-4 space-y-4">
-                  {/* Nama Produk & Kategori */}
-                  <div className="flex gap-5">
-                    <div className="w-16 h-16 rounded-md object-cover">
-                      <img src={produk.gambar} alt="" />
-                    </div>
-                    <div className="grid">
-                      <p className="font-semibold text-base">{produk.judul}</p>
-                      <p className="text-sm text-gray-500">{produk.kategori}</p>
-                    </div>
-                  </div>
-
-                  {/* Harga dan Stok */}
-                  <div className="flex items-center gap-2">
-                    <p className="text-red-600 font-bold text-lg">
-                      Rp {produk.harga?.toLocaleString("id-ID")}
-                    </p>
-                    <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">
-                      Stok {produk.stock}
-                    </span>
-                  </div>
-
-                  {/* Catatan */}
-                  <div>
-                    <label className="text-sm font-medium">
-                      Catatan untuk Penjual (opsional)
-                    </label>
-                    <textarea
-                      rows={2}
-                      placeholder="Contoh: Kirim cepat ya"
-                      className="w-full mt-1 border rounded-md px-3 py-2 text-sm resize-none"
-                    />
-                  </div>
-
-                  {/* Qty */}
-                  <div className="border-t pt-4">
-                    <div className="flex items-center gap-4 justify-between">
-                      <p className="text-sm font-medium">Jumlah</p>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() =>
-                            setQty((prev) => Math.max(1, prev - 1))
-                          }
-                          className="w-8 h-8 text-xl rounded-full bg-gray-200 hover:bg-gray-300"
-                        >
-                          −
-                        </button>
-                        <span className="w-10 text-center border rounded px-2 py-1">
-                          {qty}
-                        </span>
-                        <button
-                          onClick={() => setQty((prev) => prev + 1)}
-                          className="w-8 h-8 text-xl rounded-full bg-blue-500 text-white hover:bg-blue-600"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Subtotal */}
-                  <div className="border-t pt-4 flex justify-between items-center">
-                    <p className="font-semibold text-sm">Subtotal</p>
-                    <p className="font-bold text-orange-600">
-                      Rp {(qty * produk.harga).toLocaleString("id-ID")}
-                    </p>
-                  </div>
-                </div>
-
-                <DrawerFooter className="px-4">
-                  <button
-                    onClick={handleLanjutCheckout}
-                    className="w-full px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition font-semibold"
-                  >
-                    Lanjut ke Checkout
-                  </button>
-                  <DrawerClose asChild>
-                    <button className="w-full text-sm py-2 text-gray-500 hover:text-black">
-                      Batal
-                    </button>
-                  </DrawerClose>
-                </DrawerFooter>
-              </DrawerContent>
-            </Drawer>
+            {/* Catatan */}
+            <div>
+              <label className="text-sm font-medium block mb-1">
+                Catatan (opsional)
+              </label>
+              <textarea
+                rows={2}
+                placeholder="Contoh: Kirim cepat ya"
+                className="w-full border rounded-md px-3 py-2 text-sm resize-none"
+              />
+            </div>
           </div>
+
+          {/* Tombol Checkout */}
+          <button
+            onClick={handleLanjutCheckout}
+            className="mt-6 w-full px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition font-semibold"
+          >
+            Lanjut ke Checkout
+          </button>
         </div>
       </div>
 
-      {/* Informasi Toko */}
+      {/* 📱 Mobile Mode: Drawer Checkout */}
+      <div className="md:hidden max-w-2xl mx-auto">
+        <ProductImageSlider images={images} />
+        <h1 className="text-xl font-bold text-gray-800 mt-4 mb-2">
+          {produk.judul}
+        </h1>
+        <p className="text-lg text-gray-500 mb-2">
+          Stok:{" "}
+          <span className="font-semibold text-gray-700">
+            {produk.stock ?? "-"}
+          </span>
+        </p>
+        <p className="text-xl font-bold text-red-600 mb-4">
+          Rp {produk.harga?.toLocaleString("id-ID") || 0}
+        </p>
+
+        {/* Tombol buka drawer */}
+        <Drawer open={openDrawer} onOpenChange={setOpenDrawer}>
+          <DrawerTrigger asChild>
+            <button className="fixed bottom-4 left-4 right-4 z-50 bg-green-600 text-white font-semibold py-3 rounded-xl hover:bg-green-700">
+              Beli Sekarang
+            </button>
+          </DrawerTrigger>
+          <DrawerContent className="p-6 rounded-t-2xl">
+            <DrawerHeader>
+              <DrawerTitle>Checkout</DrawerTitle>
+            </DrawerHeader>
+            <div className="space-y-4">
+                 <div className="flex gap-5">
+                  <img src={produk.gambar} className="w-29 h-20 object-cover" alt="" />
+                <div className="grid">
+                    <div className="">
+                      {produk.judul}
+                     </div>
+                  <div className="">
+                    <span>stock: </span>{produk.stock}
+                  </div>
+                </div>
+              </div>
+              {/* Qty */}
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">Jumlah</p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                    className="w-8 h-8 text-xl rounded-full bg-gray-200 hover:bg-gray-300"
+                  >
+                    −
+                  </button>
+                  <span className="w-10 text-center border rounded px-2 py-1">
+                    {qty}
+                  </span>
+                  <button
+                    onClick={() => setQty((prev) => prev + 1)}
+                    className="w-8 h-8 text-xl rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Subtotal */}
+              <div className="flex justify-between items-center border-t pt-4">
+                <p className="font-semibold text-sm">Subtotal</p>
+                <p className="font-bold text-orange-600">
+                  Rp {(qty * produk.harga).toLocaleString("id-ID")}
+                </p>
+              </div>
+
+              {/* Tombol Lanjut */}
+              <DrawerFooter>
+                <button
+                  onClick={handleLanjutCheckout}
+                  className="w-full px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition font-semibold"
+                >
+                  Lanjut ke Checkout
+                </button>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      {/* Info Toko */}
       <div className="max-w-6xl mx-auto mt-10 p-6 bg-white shadow-md rounded-2xl flex items-center gap-5">
         <div className="w-16 h-16 rounded-full overflow-hidden">
           <img
@@ -188,8 +209,8 @@ export default function ProductDetailClient({ produk }) {
           <p className="text-lg font-bold text-gray-800">senovshop</p>
           <p className="text-sm text-gray-500">toko minecraft terpercaya</p>
           <p>
-            <a href="" className="text-blue-600">
-              lihat toko
+            <a href="#" className="text-blue-600 hover:underline">
+              Lihat Toko
             </a>
           </p>
         </div>
@@ -219,12 +240,10 @@ export default function ProductDetailClient({ produk }) {
 
         <div className="mt-4 bg-white p-4 rounded-xl shadow-sm text-sm leading-relaxed whitespace-pre-line">
           {tabIndex === 0 && (
-            <>
-              <div>{produk.deskripsi || "Tidak ada deskripsi produk."}</div>
-            </>
+            <div>{produk.deskripsi || "Tidak ada deskripsi produk."}</div>
           )}
           {tabIndex === 1 && (
-            <div className="">
+            <div>
               <p className="font-semibold">The World Is Your Playground!</p>
               With Minecraft Java & Bedrock Edition (PC), the world is made of
               blocks! Explore, mine, craft, and survive in an endless world!
@@ -238,7 +257,6 @@ export default function ProductDetailClient({ produk }) {
               Storage 1 GB.
             </div>
           )}
-          ,
         </div>
       </div>
     </div>

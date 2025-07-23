@@ -89,7 +89,7 @@ export default function CheckoutPage() {
           });
         } else {
           // Jika tidak ada Snap, langsung redirect saja
-          router.push("/success");
+          router.push("/page/success");
         }
       } else {
         alert("❌ Gagal memulai pembayaran atau data tidak valid");
